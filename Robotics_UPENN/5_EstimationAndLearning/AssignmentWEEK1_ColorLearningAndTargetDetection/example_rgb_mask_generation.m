@@ -6,7 +6,7 @@ close all
 
 imagepath = './train';
 Samples = [];
-for k=1:15
+for k=3:15
     % Load image
     I = imread(sprintf('%s/%03d.png',imagepath,k));
     
@@ -15,16 +15,13 @@ for k=1:15
     G = I(:,:,2);
     B = I(:,:,3);
     
-    %{
     % Collect samples 
     disp('');
     disp('INTRUCTION: Click along the boundary of the ball. Double-click when you get back to the initial point.')
     disp('INTRUCTION: You can maximize the window size of the figure for precise clicks.')
     figure(1), 
-    mask = roipoly(I);
-    %}
-    load(sprintf('%s/mask%03d.mat',imagepath,k), "mask");
-    %figure(2), imshow(mask); title('Mask');
+    mask = roipoly(I); 
+    figure(2), imshow(mask); title('Mask');
     sample_ind = find(mask > 0);
     
     R = R(sample_ind);
@@ -35,7 +32,8 @@ for k=1:15
     
     disp('INTRUCTION: Press any key to continue. (Ctrl+c to exit)')
     
-    %pause
+    save(sprintf('%s/mask%03d', imagepath,k), "mask")
+    pause
 end
 
 % visualize the sample distribution
@@ -53,11 +51,3 @@ zlabel('Blue');
 % the sample data.
 %
 
-% https://kr.mathworks.com/help/matlab/ref/mean.html
-ball_mean = mean([Samples(:,1), Samples(:,2), Samples(:,3)])
-
-% https://kr.mathworks.com/help/matlab/ref/cov.html
-temp = double(([Samples(:,1), Samples(:,2), Samples(:,3)]))
-ball_cov = cov(temp);
-
-save('a.mat', "ball_mean", "ball_cov");
