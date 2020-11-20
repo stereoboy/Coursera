@@ -48,8 +48,10 @@ title('Lidar measurement in the body frame');
 % Running time could take long depending on the efficiency of your code.
 % For a quicker test, you may take some hundreds frames as input arguments as
 % shown.
-%pose = particleLocalization(ranges(:,1:1000), scanAngles, M, param);
-load practice-answer.mat;
+T = 400;
+pose = particleLocalization(ranges(:,1:T), scanAngles, M, param);
+pose
+%load practice-answer.mat;
 
 %% Plot final solution
 % The final grid map:
@@ -57,8 +59,9 @@ figure;
 imagesc(M); hold on;
 
 %% Plot LIDAR data
-lidar_global(:,1) =  (ranges(:,1).*cos(scanAngles + pose(3,1)) + pose(1,1))*param.resol + param.origin(1);
-lidar_global(:,2) = (-ranges(:,1).*sin(scanAngles + pose(3,1)) + pose(2,1))*param.resol + param.origin(2);
+i = T;
+lidar_global(:,1) =  (ranges(:,i).*cos(scanAngles + pose(3,i)) + pose(1,i))*param.resol + param.origin(1);
+lidar_global(:,2) = (-ranges(:,i).*sin(scanAngles + pose(3,i)) + pose(2,i))*param.resol + param.origin(2);
 
 plot(lidar_global(:,1), lidar_global(:,2), 'g.'); 
 
@@ -66,5 +69,5 @@ plot(lidar_global(:,1), lidar_global(:,2), 'g.');
 colormap('gray');
 axis equal;
 hold on;
-plot(pose(1,:)*param.resol+param.origin(1), ...
-    pose(2,:)*param.resol+param.origin(2), 'r.-');
+plot(pose(1,1:T)*param.resol+param.origin(1), ...
+    pose(2,1:T)*param.resol+param.origin(2), 'r.-');
