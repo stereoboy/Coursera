@@ -48,9 +48,9 @@ title('Lidar measurement in the body frame');
 % Running time could take long depending on the efficiency of your code.
 % For a quicker test, you may take some hundreds frames as input arguments as
 % shown.
-T = 400;
+T = 1000;
 pose = particleLocalization(ranges(:,1:T), scanAngles, M, param);
-pose
+pose;
 %load practice-answer.mat;
 
 %% Plot final solution
